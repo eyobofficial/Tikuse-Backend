@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 INSTALLED_APPS += [
     'rest_framework',
     'corsheaders',
+    'phonenumber_field',
 ]
 
 
@@ -47,6 +48,7 @@ INSTALLED_APPS += [
 
 INSTALLED_APPS += [
     'accounts.apps.AccountsConfig',
+    'shared.apps.SharedConfig'
 ]
 
 MIDDLEWARE = [
