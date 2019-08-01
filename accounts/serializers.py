@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 
+from allauth.account.adapter import get_adapter
 from rest_framework import serializers
 
 
@@ -26,6 +27,9 @@ class UserSerializer(serializers.ModelSerializer):
             'last_login',
             'date_joined'
         )
+
+    def validate_password(self, password):
+        return get_adapter().clean_password(password)
 
     def create(self, validated_data):
         raw_password = validated_data['password']

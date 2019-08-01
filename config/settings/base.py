@@ -32,7 +32,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
 ]
 
 
@@ -41,10 +40,7 @@ INSTALLED_APPS = [
 INSTALLED_APPS += [
     'rest_framework',
     'rest_framework.authtoken',
-    'allauth',
-    'allauth.account',
     'rest_auth',
-    'rest_auth.registration',
     'corsheaders',
     'phonenumber_field',
 ]
@@ -159,22 +155,10 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 CORS_ORIGIN_ALLOW_ALL = True
 
 
-# SITE ID
-
-SITE_ID = 1
-
-
 # DRF
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ]
-}
-
-
-# Rest Auth
-
-REST_AUTH_REGISTER_SERIALIZERS = {
-    'REGISTER_SERIALIZER': 'accounts.serializers.UserSerializer'
 }
