@@ -21,6 +21,8 @@ django-filter = "*"
 django-cors-headers = "*"
 django-phonenumber-field = "*"
 phonenumbers = "*"
+django-rest-auth = "*"
+django-allauth = "*"
 
 [requires]
 python_version = "3.6"
