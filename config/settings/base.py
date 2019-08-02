@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 ]
 
 
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
 
 INSTALLED_APPS += [
     'rest_framework',
+    'drf_yasg',
     'rest_framework.authtoken',
     'rest_auth',
     'corsheaders',
@@ -51,7 +53,7 @@ INSTALLED_APPS += [
 INSTALLED_APPS += [
     'accounts.apps.AccountsConfig',
     'shared.apps.SharedConfig',
-    'profiles.apps.ProfilesConfig'
+    'profiles.apps.ProfilesConfig',
 ]
 
 MIDDLEWARE = [
@@ -153,6 +155,10 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 # Cors Headers
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+# Site ID
+
+SITE_ID = 1
 
 
 # DRF
