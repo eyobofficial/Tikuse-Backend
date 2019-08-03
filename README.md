@@ -1,10 +1,12 @@
-# Gebeta - Home Cooked Food Selling Platform
+# TIKUSE API
+## Home Cooked Food Selling Platform
 
 
 ### Prerequisites
 * [Python 3.6+](https://www.python.org/downloads/)
 * [Pipenv](https://pipenv.readthedocs.io/en/latest/)
 * [MYSQL 5.7+])(https://dev.mysql.com/downloads/mysql/)
+
 
 ### Setting up development environment
 
@@ -28,6 +30,7 @@
     DB_USER='<database user name>'
     DB_PASSWORD='<database user password>'
     DB_HOST='<host>'
+    DJANGO_SETTINGS_MODULE='<setting module path. Eg. config.settings.local>'
 
    ```
 
@@ -62,7 +65,7 @@
 3. To refer the documentation for all API endpoints, go to: [http://localhost:8000](http://localhost:8000)
 
 
-### List of Tools and Packages Used
+### List of Main Tools and Packages Used
 * [Python 3.6+](https://www.python.org/downloads/)
 * [Pipenv](https://pipenv.readthedocs.io/en/latest/)
 * [Django 2.2](https://www.djangoproject.com/download/)
@@ -70,6 +73,8 @@
 * [django-cors-headers](https://pypi.org/project/django-cors-headers/)
 * [django-rest-auth](https://django-rest-auth.readthedocs.io/en/latest/installation.html)
 * [djang-allauth](https://django-allauth.readthedocs.io/en/latest/installation.html)
-* [Django REST Swagger](https://django-rest-swagger.readthedocs.io/en/latest/)
+* [drf-yasg](https://drf-yasg.readthedocs.io/en/stable/)
 * [Python Decouple](https://github.com/henriquebastos/python-decouple)
 * [Travis CI](https://travis-ci.org/)
+* [Gunicorn](https://gunicorn.org/)
+* [django-phonenumber-field](https://github.com/stefanfoulis/django-phonenumber-field)

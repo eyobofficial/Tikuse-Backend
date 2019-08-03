@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 ]
 
 
@@ -39,7 +40,11 @@ INSTALLED_APPS = [
 
 INSTALLED_APPS += [
     'rest_framework',
+    'drf_yasg',
+    'rest_framework.authtoken',
+    'rest_auth',
     'corsheaders',
+    'phonenumber_field',
 ]
 
 
@@ -47,6 +52,8 @@ INSTALLED_APPS += [
 
 INSTALLED_APPS += [
     'accounts.apps.AccountsConfig',
+    'shared.apps.SharedConfig',
+    'profiles.apps.ProfilesConfig',
 ]
 
 MIDDLEWARE = [
@@ -134,18 +141,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = 'static'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-
-# Authentications
-
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'accounts.backends.EmailBackend'
-]
 
 
 # Custom Auth User Model
@@ -156,3 +155,16 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 # Cors Headers
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+# Site ID
+
+SITE_ID = 1
+
+
+# DRF
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
