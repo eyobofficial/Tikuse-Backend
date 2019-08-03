@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView
 
 from rest_framework import permissions
 
@@ -33,11 +34,12 @@ schema_view = get_schema_view(
 
 
 urlpatterns = [
-    path('accounts/', include('accounts.urls', namespace='accounts')),
     path('admin/', admin.site.urls),
+    path('api/v1/accounts/', include('accounts.urls', namespace='accounts')),
     path(
-        '',
+        'api/v1/',
         schema_view.with_ui('swagger', cache_timeout=0),
         name='docs'
     ),
+    path('', RedirectView.as_view(url='/api/v1/'))
 ]
