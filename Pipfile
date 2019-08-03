@@ -25,6 +25,7 @@ django-allauth = "*"
 pyyaml = "*"
 drf-yasg = {extras = ["validation"],version = "*"}
 packaging = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.6"
