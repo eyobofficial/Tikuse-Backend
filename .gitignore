@@ -236,7 +236,9 @@ Temporary Items
 
 # Custom
 /media
+/config/media
 /static
+/config/static
 /logs
 celerybeat.pid
 *.db

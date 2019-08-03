@@ -22,5 +22,8 @@ def save_user_profile(sender, instance, **kwargs):
     """
     Update a user profile when a new user instance is updated.
     """
-    if instance.profile:
-        instance.profile.save()
+    try:
+        profile = Profile.objects.get(user=instance)
+        profile.save()
+    except Profile.DoesNotExist:
+        pass
