@@ -3,7 +3,7 @@ from django.urls import path
 from .views import SignUpAPIView
 
 
-app_name = 'accounts'
+app_name = 'v1-accounts'
 
 
 urlpatterns = [
