@@ -44,5 +44,5 @@ urlpatterns = [
         schema_view.with_ui('swagger', cache_timeout=0),
         name='docs'
     ),
-    path('', RedirectView.as_view(url='/api/v1/'))
+    path('', RedirectView.as_view(url='/v1/'))
 ]
