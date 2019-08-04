@@ -152,6 +152,14 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
 
+# Authentications
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'accounts.backends.PhoneNumberBackend'
+]
+
+
 # Cors Headers
 
 CORS_ORIGIN_ALLOW_ALL = True
