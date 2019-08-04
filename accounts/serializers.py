@@ -17,6 +17,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
+        read_only_fields = ('role', )
         fields = (
             'id',
             'username',
@@ -36,8 +37,7 @@ class UserSerializer(serializers.ModelSerializer):
         user = User(
             username=validated_data['username'],
             full_name=validated_data['full_name'],
-            phone_number=validated_data['phone_number'],
-            role=validated_data['role'],
+            phone_number=validated_data['phone_number']
         )
         user.set_password(raw_password)
         user.save()
