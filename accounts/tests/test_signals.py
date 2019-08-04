@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from profiles.models import Profile
+from profiles.models import GuestProfile, HostProfile
 from .factories import UserFactory, GuestFactory, HostFactory
 
 
@@ -9,26 +9,30 @@ class CreateUserProfileTests(TestCase):
     Tests for `create_user_profile` signal
     """
 
+    def setUp(self):
+        self.valid_phone_number = '+251911000000'
+
     def test_creating_host_user_profile(self):
         """
         Ensure creating a new HOST also creates an associated
-        profile
+        HostProfile instance
         """
-        user = GuestFactory()
-        self.assertEqual(Profile.objects.filter(user=user).count(), 1)
+        user = GuestFactory(phone_number=self.valid_phone_number)
+        self.assertEqual(GuestProfile.objects.filter(user=user).count(), 1)
 
     def test_creating_guest_user_profile(self):
         """
         Ensure creating a new GUEST also creates an associated
-        profile
+        GuestProfile instance
         """
-        user = HostFactory()
-        self.assertEqual(Profile.objects.filter(user=user).count(), 1)
+        user = HostFactory(phone_number=self.valid_phone_number)
+        self.assertEqual(HostProfile.objects.filter(user=user).count(), 1)
 
     def test_creating_user_with_no_role(self):
         """
         Ensure creating a new user with ROLE attribue does not creates
         an associated profile
         """
-        user = UserFactory()
-        self.assertEqual(Profile.objects.filter(user=user).count(), 0)
+        user = UserFactory(phone_number=self.valid_phone_number)
+        self.assertEqual(GuestProfile.objects.filter(user=user).count(), 0)
+        self.assertEqual(HostProfile.objects.filter(user=user).count(), 0)

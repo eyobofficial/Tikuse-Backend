@@ -26,6 +26,8 @@ pyyaml = "*"
 drf-yasg = {extras = ["validation"],version = "*"}
 packaging = "*"
 gunicorn = "*"
+pillow = "*"
+django-environ = "*"
 
 [requires]
 python_version = "3.6"

@@ -5,18 +5,19 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from .factories import HostFactory
+from accounts.models import CustomUser
 
 
 User = get_user_model()
 
 
-class SignUpAPIViewTests(APITestCase):
+class HostSignUpAPIViewTests(APITestCase):
     """
-    Tests for `SignUpAPIView` class
+    Tests for `host-signup` endpoint
     """
 
     def setUp(self):
-        self.url = reverse('v1-accounts:signup')
+        self.url = reverse('v1-accounts:host-signup')
 
     def test_endpoint_with_GET_request(self):
         """
@@ -36,21 +37,20 @@ class SignUpAPIViewTests(APITestCase):
             - password
             - full_name
             - phone_number
-            - role
-        creates a new user and returns an authentication key.
+        creates a new Host user and returns an authentication key.
         """
         payload = {
             'username': 'testuser',
             'password': 'Passw0rd1234',
             'full_name': 'Test User',
-            'phone_number': '+251911000000',
-            'role': 'HOST'
+            'phone_number': '+251911000000'
         }
         response = self.client.post(self.url, payload, format='json')
 
         # Assertions
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(User.objects.count(), 1)
+        self.assertEqual(User.objects.first().role, CustomUser.HOST)
         self.assertTrue('key' in response.json())
 
     def test_endpoint_with_POST_request_without_a_username(self):
@@ -61,8 +61,7 @@ class SignUpAPIViewTests(APITestCase):
         payload = {
             'password': 'Passw0rd1234',
             'full_name': 'Test User',
-            'phone_number': '+251911000000',
-            'role': 'HOST'
+            'phone_number': '+251911000000'
         }
         response = self.client.post(self.url, payload, format='json')
 
@@ -78,8 +77,7 @@ class SignUpAPIViewTests(APITestCase):
         payload = {
             'username': 'testuser',
             'full_name': 'Test User',
-            'phone_number': '+251911000000',
-            'role': 'HOST'
+            'phone_number': '+251911000000'
         }
         response = self.client.post(self.url, payload, format='json')
 
@@ -95,8 +93,7 @@ class SignUpAPIViewTests(APITestCase):
         payload = {
             'username': 'testuser',
             'password': 'Passw0rd1234',
-            'phone_number': '+251911000000',
-            'role': 'HOST'
+            'phone_number': '+251911000000'
         }
         response = self.client.post(self.url, payload, format='json')
 
@@ -112,8 +109,7 @@ class SignUpAPIViewTests(APITestCase):
         payload = {
             'username': 'testuser',
             'password': 'Passw0rd1234',
-            'full_name': 'Test User',
-            'role': 'HOST'
+            'full_name': 'Test User'
         }
         response = self.client.post(self.url, payload, format='json')
 
@@ -130,25 +126,7 @@ class SignUpAPIViewTests(APITestCase):
             'username': 'testuser',
             'password': 'Passw0rd1234',
             'full_name': 'Test User',
-            'phone_number': '1234',
-            'role': 'HOST'
-        }
-        response = self.client.post(self.url, payload, format='json')
-
-        # Assertions
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(User.objects.count(), 0)
-
-    def test_endpoint_with_POST_request_without_a_role(self):
-        """
-        Ensuer that a POST request without a `role` data does not
-        creates a new user.
-        """
-        payload = {
-            'username': 'testuser',
-            'password': 'Passw0rd1234',
-            'full_name': 'Test User',
-            'phone_number': '+251911000000'
+            'phone_number': '1234'
         }
         response = self.client.post(self.url, payload, format='json')
 
@@ -161,13 +139,12 @@ class SignUpAPIViewTests(APITestCase):
         Ensuer that a POST request with an existing `username` data
         does not creates a new user.
         """
-        HostFactory(username='testuser')  # Existing username
+        HostFactory(username='testuser', password='+251911111111')
         payload = {
             'username': 'testuser',
             'password': 'Passw0rd1234',
             'full_name': 'Test User',
-            'phone_number': '+251911000000',
-            'role': 'HOST'
+            'phone_number': '+251911000000'
         }
         response = self.client.post(self.url, payload, format='json')
 
@@ -180,7 +157,7 @@ class SignUpAPIViewTests(APITestCase):
         Ensuer that a POST request with an existing `phone_number` data
         does not creates a new user.
         """
-        HostFactory(phone_number='+251911000000')  # Existing username
+        HostFactory(username='otheruser', phone_number='+251911000000')
         payload = {
             'username': 'testuser',
             'password': 'Passw0rd1234',
@@ -205,8 +182,7 @@ class LoginEndpointTests(APITestCase):
             username='testuser',
             password='Passw0rd1234',
             full_name='Test User',
-            phone_number='+251911000000',
-            role='HOST'
+            phone_number='+251911000000'
         )
         self.url = reverse('v1-accounts:login')
 

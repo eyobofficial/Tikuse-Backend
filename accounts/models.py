@@ -28,7 +28,11 @@ class CustomUser(AbstractUser):
     )
     phone_number = PhoneNumberField(unique=True)
     full_name = models.CharField(max_length=120)
-    role = models.CharField(max_length=5, choices=TYPE_CHOICES)
+    role = models.CharField(
+        max_length=5,
+        choices=TYPE_CHOICES,
+        blank=True, null=True
+    )
 
     def __str__(self):
         return self.username
