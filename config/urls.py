@@ -25,7 +25,7 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Gebeta API",
+        title="Tikuse API",
         default_version='v1.0.0'
     ),
     public=False,

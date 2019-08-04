@@ -41,7 +41,7 @@ class SignUpAPIViewTests(APITestCase):
         """
         payload = {
             'username': 'testuser',
-            'password': 'Passsword1234',
+            'password': 'Passw0rd1234',
             'full_name': 'Test User',
             'phone_number': '+251911000000',
             'role': 'HOST'
@@ -59,7 +59,7 @@ class SignUpAPIViewTests(APITestCase):
         creates a new user.
         """
         payload = {
-            'password': 'Passsword1234',
+            'password': 'Passw0rd1234',
             'full_name': 'Test User',
             'phone_number': '+251911000000',
             'role': 'HOST'
@@ -94,7 +94,7 @@ class SignUpAPIViewTests(APITestCase):
         """
         payload = {
             'username': 'testuser',
-            'password': 'Passsword1234',
+            'password': 'Passw0rd1234',
             'phone_number': '+251911000000',
             'role': 'HOST'
         }
@@ -111,7 +111,7 @@ class SignUpAPIViewTests(APITestCase):
         """
         payload = {
             'username': 'testuser',
-            'password': 'Passsword1234',
+            'password': 'Passw0rd1234',
             'full_name': 'Test User',
             'role': 'HOST'
         }
@@ -128,7 +128,7 @@ class SignUpAPIViewTests(APITestCase):
         """
         payload = {
             'username': 'testuser',
-            'password': 'Passsword1234',
+            'password': 'Passw0rd1234',
             'full_name': 'Test User',
             'phone_number': '1234',
             'role': 'HOST'
@@ -146,7 +146,7 @@ class SignUpAPIViewTests(APITestCase):
         """
         payload = {
             'username': 'testuser',
-            'password': 'Passsword1234',
+            'password': 'Passw0rd1234',
             'full_name': 'Test User',
             'phone_number': '+251911000000'
         }
@@ -164,7 +164,7 @@ class SignUpAPIViewTests(APITestCase):
         HostFactory(username='testuser')  # Existing username
         payload = {
             'username': 'testuser',
-            'password': 'Passsword1234',
+            'password': 'Passw0rd1234',
             'full_name': 'Test User',
             'phone_number': '+251911000000',
             'role': 'HOST'
@@ -183,7 +183,7 @@ class SignUpAPIViewTests(APITestCase):
         HostFactory(phone_number='+251911000000')  # Existing username
         payload = {
             'username': 'testuser',
-            'password': 'Passsword1234',
+            'password': 'Passw0rd1234',
             'full_name': 'Test User',
             'phone_number': '+251911000000',
             'role': 'HOST'
@@ -193,3 +193,90 @@ class SignUpAPIViewTests(APITestCase):
         # Assertions
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(User.objects.count(), 1)
+
+
+class LoginEndpointTests(APITestCase):
+    """
+    Tests for `login` API endpoint
+    """
+
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username='testuser',
+            password='Passw0rd1234',
+            full_name='Test User',
+            phone_number='+251911000000',
+            role='HOST'
+        )
+        self.url = reverse('v1-accounts:login')
+
+    def test_endpoint_with_GET_request(self):
+        """
+        Ensure GET http request is not allowed.
+        """
+        response = self.client.get(self.url)
+
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_405_METHOD_NOT_ALLOWED
+        )
+
+    def test_endpoint_with_valid_username_and_password(self):
+        """
+        Ensure POST http request with valid `username` & `password`,
+        returns a token key.
+        """
+        payload = {
+            'username': 'testuser',
+            'password': 'Passw0rd1234'
+        }
+        response = self.client.post(self.url, payload, format='json')
+
+        # Assertions
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue('key' in response.json())
+
+    def test_endpoint_with_valid_phone_number_and_password(self):
+        """
+        Ensure POST http request with valid `phone_number` & `password`,
+        returns a token key.
+        """
+        payload = {
+            'username': '+251911000000',
+            'password': 'Passw0rd1234'
+        }
+        response = self.client.post(self.url, payload, format='json')
+
+        # Assertions
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue('key' in response.json())
+
+    def test_endpoint_with_invalid_username_and_password(self):
+        """
+        Ensure POST http request with invalid `username` & `password`,
+        does not return a token key.
+        """
+        payload = {
+            'username': 'invaliduser',
+            'password': 'Passw0rd1234'
+        }
+        response = self.client.post(self.url, payload, format='json')
+
+        # Assertions
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertFalse('key' in response.json())
+
+    def test_endpoint_with_invalid_phone_number_and_password(self):
+        """
+        Ensure POST http request with invalid `phone_number` & `password`,
+        does not return a token key.
+        """
+        payload = {
+            'username': '+251911000001',
+            'password': 'Passw0rd1234'
+        }
+        response = self.client.post(self.url, payload, format='json')
+
+        # Assertions
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertFalse('key' in response.json())
