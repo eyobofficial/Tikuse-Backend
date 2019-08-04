@@ -36,11 +36,11 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path(
-        'api/v1/accounts/',
+        'v1/accounts/',
         include('accounts.urls', namespace='v1-accounts')
     ),
     path(
-        'api/v1/',
+        'v1/',
         schema_view.with_ui('swagger', cache_timeout=0),
         name='docs'
     ),
