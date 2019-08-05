@@ -37,7 +37,7 @@ class HostSignUpAPIViewTests(APITestCase):
             - password
             - full_name
             - phone_number
-        creates a new Host user and returns an authentication key.
+        creates a new Host user and returns a JWT token with user data.
         """
         payload = {
             'username': 'testuser',
@@ -51,7 +51,14 @@ class HostSignUpAPIViewTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(User.objects.count(), 1)
         self.assertEqual(User.objects.first().role, CustomUser.HOST)
-        self.assertTrue('key' in response.json())
+        self.assertTrue('token' in response.json())
+        self.assertTrue('id' in response.json())
+        self.assertTrue('username' in response.json())
+        self.assertTrue('full_name' in response.json())
+        self.assertTrue('phone_number' in response.json())
+        self.assertTrue('role' in response.json())
+        self.assertTrue('last_login' in response.json())
+        self.assertTrue('date_joined' in response.json())
 
     def test_endpoint_with_POST_request_without_a_username(self):
         """
@@ -210,7 +217,14 @@ class LoginEndpointTests(APITestCase):
 
         # Assertions
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue('key' in response.json())
+        self.assertTrue('token' in response.json())
+        self.assertTrue('id' in response.json())
+        self.assertTrue('username' in response.json())
+        self.assertTrue('full_name' in response.json())
+        self.assertTrue('phone_number' in response.json())
+        self.assertTrue('role' in response.json())
+        self.assertTrue('last_login' in response.json())
+        self.assertTrue('date_joined' in response.json())
 
     def test_endpoint_with_valid_phone_number_and_password(self):
         """
@@ -225,7 +239,14 @@ class LoginEndpointTests(APITestCase):
 
         # Assertions
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue('key' in response.json())
+        self.assertTrue('token' in response.json())
+        self.assertTrue('id' in response.json())
+        self.assertTrue('username' in response.json())
+        self.assertTrue('full_name' in response.json())
+        self.assertTrue('phone_number' in response.json())
+        self.assertTrue('role' in response.json())
+        self.assertTrue('last_login' in response.json())
+        self.assertTrue('date_joined' in response.json())
 
     def test_endpoint_with_invalid_username_and_password(self):
         """
@@ -240,7 +261,7 @@ class LoginEndpointTests(APITestCase):
 
         # Assertions
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertFalse('key' in response.json())
+        self.assertFalse('token' in response.json())
 
     def test_endpoint_with_invalid_phone_number_and_password(self):
         """
@@ -255,4 +276,4 @@ class LoginEndpointTests(APITestCase):
 
         # Assertions
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertFalse('key' in response.json())
+        self.assertFalse('token' in response.json())
