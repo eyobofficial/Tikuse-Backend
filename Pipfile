@@ -28,6 +28,7 @@ packaging = "*"
 gunicorn = "*"
 pillow = "*"
 django-environ = "*"
+djangorestframework-jwt = "*"
 
 [requires]
 python_version = "3.6"

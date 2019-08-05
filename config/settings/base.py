@@ -42,7 +42,6 @@ INSTALLED_APPS = [
 INSTALLED_APPS += [
     'rest_framework',
     'drf_yasg',
-    'rest_framework.authtoken',
     'rest_auth',
     'corsheaders',
     'phonenumber_field',
@@ -174,6 +173,14 @@ SITE_ID = 1
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
     ]
+}
+
+
+# JWT
+
+JWT_AUTH = {
+    'JWT_RESPONSE_PAYLOAD_HANDLER':
+        'accounts.utilities.jwt_response_payload_handler',
 }
