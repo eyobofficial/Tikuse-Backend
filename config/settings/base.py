@@ -184,3 +184,8 @@ JWT_AUTH = {
     'JWT_RESPONSE_PAYLOAD_HANDLER':
         'accounts.utilities.jwt_response_payload_handler',
 }
+
+
+# Django Phonenumber Field
+
+PHONENUMBER_DEFAULT_REGION = 'ET'
