@@ -5,7 +5,7 @@
 ### Prerequisites
 * [Python 3.6+](https://www.python.org/downloads/)
 * [Pipenv](https://pipenv.readthedocs.io/en/latest/)
-* [MYSQL 5.7+])(https://dev.mysql.com/downloads/mysql/)
+* [MYSQL 5.7+](https://dev.mysql.com/downloads/mysql/)
 
 
 ### Setting up development environment
@@ -18,7 +18,7 @@
    ```
 3. Make sure the MySQL Server is up and running.
 
-4. Create a database called `gebeta_db`.
+4. Create a database called `tikuse_db`.
 
 5. At the project root directory, there is a file named `.env_example`. Copy the file and rename the copy as `.env`.
 
@@ -26,7 +26,7 @@
 
    ```bash
     SECRET_KEY='<django secret key>'
-    DB_NAME='gebeta_db'
+    DB_NAME='tikuse_db'
     DB_USER='<database user name>'
     DB_PASSWORD='<database user password>'
     DB_HOST='<host>'
@@ -74,6 +74,7 @@
 * [django-rest-auth](https://django-rest-auth.readthedocs.io/en/latest/installation.html)
 * [djang-allauth](https://django-allauth.readthedocs.io/en/latest/installation.html)
 * [drf-yasg](https://drf-yasg.readthedocs.io/en/stable/)
+* [django-environ](https://django-environ.readthedocs.io/en/latest/)
 * [Python Decouple](https://github.com/henriquebastos/python-decouple)
 * [Travis CI](https://travis-ci.org/)
 * [Gunicorn](https://gunicorn.org/)
