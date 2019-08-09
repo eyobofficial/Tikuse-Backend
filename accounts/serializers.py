@@ -3,6 +3,8 @@ from django.contrib.auth import get_user_model
 from allauth.account.adapter import get_adapter
 from rest_framework import serializers
 
+from profiles.serializers import HostProfileSerializer
+
 
 User = get_user_model()
 
@@ -42,3 +44,10 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(raw_password)
         user.save()
         return user
+
+
+class HostSerializer(UserSerializer):
+    profile = HostProfileSerializer(source='host')
+
+    class Meta(UserSerializer.Meta):
+        fields = UserSerializer.Meta.fields + ('profile', )
