@@ -6,8 +6,12 @@ from rest_framework.response import Response
 
 from rest_framework_jwt.settings import api_settings
 
+from shared.constants import LANG_AMHARIC, LANG_ENGLISH
+from shared.views import BaseSMSView
+
 from .models import CustomUser
 from .serializers import UserSerializer
+from .sms.notifications import HostSignupNotificationSMS
 from .utilities import jwt_response_payload_handler
 
 
@@ -30,6 +34,10 @@ class HostSignUpAPIView(CreateAPIView):
         user.role = CustomUser.HOST
         user.save()
 
+        # Send Registration SMS
+        HostSignupNotificationSMS(user).send(lang='EN')
+        HostSignupNotificationSMS(user).send(lang='AM')
+
         # Generate JWT token
         payload = jwt_payload_handler(user)
         token = jwt_encode_handler(payload)
@@ -38,3 +46,19 @@ class HostSignUpAPIView(CreateAPIView):
         data = jwt_response_payload_handler(token, user, request)
         headers = self.get_success_headers(serializer.data)
         return Response(data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class HostSignupNotificationEN(BaseSMSView):
+    url = 'admin:accounts_customuser_change'
+    model = User
+    sms_class = HostSignupNotificationSMS
+    sms_name = 'HOST signup notification (English)'
+    lang = LANG_ENGLISH
+
+
+class HostSignupNotificationAM(BaseSMSView):
+    url = 'admin:accounts_customuser_change'
+    model = User
+    sms_class = HostSignupNotificationSMS
+    sms_name = 'HOST signup notification (Amharic)'
+    lang = LANG_AMHARIC

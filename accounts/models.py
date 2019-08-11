@@ -39,3 +39,6 @@ class CustomUser(AbstractUser):
 
     def get_full_name(self):
         return self.full_name
+
+    def get_first_name(self):
+        return self.full_name.split()[0].title()
