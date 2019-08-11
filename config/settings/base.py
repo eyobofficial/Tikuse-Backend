@@ -101,7 +101,13 @@ DATABASES = {
         'PASSWORD': config('DB_PASSWORD'),
         'HOST': config('DB_HOST'),
         'PORT': '',
-    }
+        'OPTIONS': {
+            'charset': 'utf8mb4'
+        },
+        'TEST': {
+            'CHARSET': 'utf8mb4'
+        }
+    },
 }
 
 # Password validation
@@ -189,3 +195,14 @@ JWT_AUTH = {
 # Django Phonenumber Field
 
 PHONENUMBER_DEFAULT_REGION = 'ET'
+
+
+# SMS
+
+DEFAULT_SMS_PROVIDER = 'shared.sms.providers.AfricasTalking'
+
+# Africastalking
+
+AFRICASTALKING_API_USERNAME = config('AFRICASTALKING_API_USERNAME')
+AFRICASTALKING_API_KEY = config('AFRICASTALKING_API_KEY')
+AFRICASTALKING_SHORT_CODE = config('AFRICASTALKING_SHORT_CODE')

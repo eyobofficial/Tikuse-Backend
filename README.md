@@ -79,3 +79,4 @@
 * [Travis CI](https://travis-ci.org/)
 * [Gunicorn](https://gunicorn.org/)
 * [django-phonenumber-field](https://github.com/stefanfoulis/django-phonenumber-field)
+* [Africastalking](https://github.com/AfricasTalkingLtd/africastalking-python)
