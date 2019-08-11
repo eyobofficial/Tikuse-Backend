@@ -1,3 +1,5 @@
+import mock
+
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
@@ -30,7 +32,8 @@ class HostSignUpAPIViewTests(APITestCase):
             status.HTTP_405_METHOD_NOT_ALLOWED
         )
 
-    def test_endpoint_with_POST_request_and_valid_data(self):
+    @mock.patch('accounts.sms.notifications.HostSignupNotificationSMS.send')
+    def test_endpoint_with_POST_request_and_valid_data(self, mock_sms):
         """
         Ensure that a POST request with:
             - username
@@ -59,6 +62,7 @@ class HostSignUpAPIViewTests(APITestCase):
         self.assertTrue('role' in response.json())
         self.assertTrue('last_login' in response.json())
         self.assertTrue('date_joined' in response.json())
+        self.assertEqual(mock_sms.call_count, 2)
 
     def test_endpoint_with_POST_request_without_a_username(self):
         """
