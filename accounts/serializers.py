@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from allauth.account.adapter import get_adapter
 from rest_framework import serializers
 
-from profiles.serializers import HostProfileSerializer
+from .models import HostProfile, HostPhoto
 
 
 User = get_user_model()
@@ -44,6 +44,33 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(raw_password)
         user.save()
         return user
+
+
+class HostPhotoSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(source='public_id', read_only=True)
+
+    class Meta:
+        model = HostPhoto
+        fields = ('id', 'photo', 'title', 'created_at')
+
+
+class HostProfileSerializer(serializers.ModelSerializer):
+    photos = HostPhotoSerializer(many=True)
+
+    class Meta:
+        model = HostProfile
+        fields = (
+            'about',
+            'email',
+            'profile_picture',
+            'address',
+            'latitude',
+            'longitude',
+            'is_activated',
+            'created_at',
+            'updated_at',
+            'photos'
+        )
 
 
 class HostSerializer(UserSerializer):
