@@ -63,6 +63,7 @@ class HostProfileSerializer(serializers.ModelSerializer):
             'about',
             'email',
             'profile_picture',
+            'cover_picture',
             'address',
             'latitude',
             'longitude',
