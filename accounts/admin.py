@@ -43,6 +43,11 @@ class GuestProfileAdmin(admin.ModelAdmin):
     list_display = ('public_id', 'user', 'created_at', 'updated_at')
 
 
+class HostPhotoInline(admin.TabularInline):
+    model = HostPhoto
+    extra = 1
+
+
 @admin.register(HostProfile)
 class HostProfileAdmin(admin.ModelAdmin):
     list_display = (
@@ -53,8 +58,4 @@ class HostProfileAdmin(admin.ModelAdmin):
         'updated_at'
     )
     list_filter = ('is_activated', )
-
-
-@admin.register(HostPhoto)
-class HostPhotoAdmin(admin.ModelAdmin):
-    list_display = ('public_id', 'profile', 'title', 'created_at')
+    inlines = (HostPhotoInline, )
