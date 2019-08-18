@@ -38,7 +38,6 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('v1/accounts/', include('accounts.urls', namespace='v1-accounts')),
-    path('v1/profiles/', include('profiles.urls', namespace='v1-profiles')),
     path(
         'v1/',
         schema_view.with_ui('swagger', cache_timeout=0),

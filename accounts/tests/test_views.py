@@ -8,6 +8,7 @@ from rest_framework.test import APITestCase
 
 from .factories import HostFactory
 from accounts.models import CustomUser
+from accounts.serializers import HostSerializer
 
 
 User = get_user_model()
@@ -281,3 +282,35 @@ class LoginEndpointTests(APITestCase):
         # Assertions
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertFalse('token' in response.json())
+
+
+class HostOwnDetailAPIViewTests(APITestCase):
+    """
+    Tests for `HostOwnDetailAPIView`
+    """
+
+    def setUp(self):
+        self.host = HostFactory(
+            username='testuser',
+            password='TestP@assw0rd',
+            phone_number='+251911000000'
+        )
+        self.url = reverse('v1-accounts:host-own-detail')
+
+    def test_endpoint_with_anonymous_user(self):
+        """
+        Ensure a GET request from anonymous user cannot retrieve host detail.
+        """
+        response = self.client.get(self.url, forma='json')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_endpoint_with_authenticated_user_token(self):
+        """
+        Ensure a GET request from authenticated host retrieves own detail.
+        """
+        self.client.force_authenticate(self.host)
+        serializer = HostSerializer(self.host)
+        response = self.client.get(self.url, forma='json')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, serializer.data)

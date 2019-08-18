@@ -53,7 +53,6 @@ INSTALLED_APPS += [
 INSTALLED_APPS += [
     'accounts.apps.AccountsConfig',
     'shared.apps.SharedConfig',
-    'profiles.apps.ProfilesConfig',
 ]
 
 MIDDLEWARE = [
@@ -189,6 +188,8 @@ REST_FRAMEWORK = {
 JWT_AUTH = {
     'JWT_RESPONSE_PAYLOAD_HANDLER':
         'accounts.utilities.jwt_response_payload_handler',
+    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
+    'JWT_VERIFY_EXPIRATION': False
 }
 
 

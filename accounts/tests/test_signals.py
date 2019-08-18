@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from profiles.models import GuestProfile, HostProfile
+from accounts.models import GuestProfile, HostProfile
 from .factories import UserFactory, GuestFactory, HostFactory
 
 

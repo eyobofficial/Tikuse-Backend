@@ -1,7 +1,8 @@
 from django.contrib.auth import get_user_model
 
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from rest_framework_jwt.settings import api_settings
@@ -10,7 +11,7 @@ from shared.constants import LANG_AMHARIC, LANG_ENGLISH
 from shared.views import BaseSMSView
 
 from .models import CustomUser
-from .serializers import UserSerializer
+from .serializers import UserSerializer, HostSerializer
 from .sms.notifications import HostSignupNotificationSMS
 from .utilities import jwt_response_payload_handler
 
@@ -46,6 +47,15 @@ class HostSignUpAPIView(CreateAPIView):
         data = jwt_response_payload_handler(token, user, request)
         headers = self.get_success_headers(serializer.data)
         return Response(data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class HostOwnDetailAPIView(RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = HostSerializer
+    permission_classes = (IsAuthenticated, )
+
+    def get_object(self):
+        return self.request.user
 
 
 class HostSignupNotificationEN(BaseSMSView):

@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from shared.admin import CustomURLModelAdmin
 
-from .models import CustomUser
+from .models import CustomUser, GuestProfile, HostProfile, HostPhoto
 from .views import HostSignupNotificationEN, HostSignupNotificationAM
 
 
@@ -36,3 +36,26 @@ class CustomUserAdmin(CustomURLModelAdmin):
             'name': 'send-host-signup-notification-am'
         },
     ]
+
+
+@admin.register(GuestProfile)
+class GuestProfileAdmin(admin.ModelAdmin):
+    list_display = ('public_id', 'user', 'created_at', 'updated_at')
+
+
+class HostPhotoInline(admin.TabularInline):
+    model = HostPhoto
+    extra = 1
+
+
+@admin.register(HostProfile)
+class HostProfileAdmin(admin.ModelAdmin):
+    list_display = (
+        'public_id',
+        'user',
+        'is_activated',
+        'created_at',
+        'updated_at'
+    )
+    list_filter = ('is_activated', )
+    inlines = (HostPhotoInline, )
