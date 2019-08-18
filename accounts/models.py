@@ -90,6 +90,8 @@ class GuestProfile(BaseProfile):
 
     class Meta:
         default_related_name = 'guest'
+        verbose_name = 'Guest'
+        verbose_name_plural = 'Guests'
 
 
 class HostProfile(BaseProfile):
@@ -105,6 +107,8 @@ class HostProfile(BaseProfile):
 
     class Meta:
         default_related_name = 'host'
+        verbose_name = 'Host'
+        verbose_name_plural = 'Hosts'
 
     def __str__(self):
         return self.user.username
