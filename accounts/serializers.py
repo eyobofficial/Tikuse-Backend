@@ -1,15 +1,16 @@
 from django.contrib.auth import get_user_model
+from django.db import transaction
 
 from allauth.account.adapter import get_adapter
 from rest_framework import serializers
 
-from .models import HostProfile, HostPhoto
+from .models import CustomUser, HostProfile, HostPhoto
 
 
 User = get_user_model()
 
 
-class UserSerializer(serializers.ModelSerializer):
+class BaseUserSerializer(serializers.ModelSerializer):
     id = serializers.CharField(source='public_id', read_only=True)
     password = serializers.CharField(
         max_length=120,
@@ -23,9 +24,8 @@ class UserSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'username',
-            'password',
-            'full_name',
             'phone_number',
+            'password',
             'role',
             'last_login',
             'date_joined'
@@ -38,7 +38,6 @@ class UserSerializer(serializers.ModelSerializer):
         raw_password = validated_data['password']
         user = User(
             username=validated_data['username'],
-            full_name=validated_data['full_name'],
             phone_number=validated_data['phone_number']
         )
         user.set_password(raw_password)
@@ -60,13 +59,15 @@ class HostProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = HostProfile
         fields = (
+            'full_name',
             'about',
-            'email',
             'profile_picture',
             'cover_picture',
+            'email',
             'address',
             'latitude',
             'longitude',
+            'religion',
             'is_activated',
             'created_at',
             'updated_at',
@@ -74,8 +75,22 @@ class HostProfileSerializer(serializers.ModelSerializer):
         )
 
 
-class HostSerializer(UserSerializer):
-    profile = HostProfileSerializer(source='host')
+class HostSerializer(BaseUserSerializer):
+    full_name = serializers.CharField(max_length=120, write_only=True)
+    profile = HostProfileSerializer(source='host', required=False)
 
-    class Meta(UserSerializer.Meta):
-        fields = UserSerializer.Meta.fields + ('profile', )
+    class Meta(BaseUserSerializer.Meta):
+        fields = BaseUserSerializer.Meta.fields + ('full_name', 'profile')
+
+    @transaction.atomic
+    def create(self, validated_data):
+        full_name = validated_data.pop('full_name')
+        user = super().create(validated_data)
+        user.role = CustomUser.HOST
+        user.save()
+
+        # Add full_name to profile
+        user.host.full_name = full_name
+        user.host.save()
+
+        return user
