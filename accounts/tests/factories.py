@@ -10,7 +10,6 @@ User = get_user_model()
 
 class UserFactory(factory.django.DjangoModelFactory):
     username = factory.Sequence(lambda n: f'username{n}')
-    full_name = factory.Faker('name')
 
     class Meta:
         model = User
