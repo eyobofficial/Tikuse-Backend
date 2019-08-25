@@ -234,6 +234,9 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# IDE settings and configurations
+.vscode/
+
 # Custom
 /media
 /config/media
