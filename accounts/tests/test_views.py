@@ -58,11 +58,12 @@ class HostSignUpAPIViewTests(APITestCase):
         self.assertTrue('token' in response.json())
         self.assertTrue('id' in response.json())
         self.assertTrue('username' in response.json())
-        self.assertTrue('full_name' in response.json())
         self.assertTrue('phone_number' in response.json())
         self.assertTrue('role' in response.json())
         self.assertTrue('last_login' in response.json())
         self.assertTrue('date_joined' in response.json())
+        self.assertTrue('profile' in response.json())
+        self.assertEqual(User.objects.first().host.full_name, 'Test User')
         self.assertEqual(mock_sms.call_count, 2)
 
     def test_endpoint_with_POST_request_without_a_username(self):
@@ -193,8 +194,8 @@ class LoginEndpointTests(APITestCase):
         self.user = User.objects.create_user(
             username='testuser',
             password='Passw0rd1234',
-            full_name='Test User',
-            phone_number='+251911000000'
+            phone_number='+251911000000',
+            role='HOST'
         )
         self.url = reverse('v1-accounts:login')
 
@@ -225,11 +226,11 @@ class LoginEndpointTests(APITestCase):
         self.assertTrue('token' in response.json())
         self.assertTrue('id' in response.json())
         self.assertTrue('username' in response.json())
-        self.assertTrue('full_name' in response.json())
         self.assertTrue('phone_number' in response.json())
         self.assertTrue('role' in response.json())
         self.assertTrue('last_login' in response.json())
         self.assertTrue('date_joined' in response.json())
+        self.assertTrue('profile' in response.json())
 
     def test_endpoint_with_valid_phone_number_and_password(self):
         """
@@ -247,11 +248,11 @@ class LoginEndpointTests(APITestCase):
         self.assertTrue('token' in response.json())
         self.assertTrue('id' in response.json())
         self.assertTrue('username' in response.json())
-        self.assertTrue('full_name' in response.json())
         self.assertTrue('phone_number' in response.json())
         self.assertTrue('role' in response.json())
         self.assertTrue('last_login' in response.json())
         self.assertTrue('date_joined' in response.json())
+        self.assertTrue('profile' in response.json())
 
     def test_endpoint_with_invalid_username_and_password(self):
         """

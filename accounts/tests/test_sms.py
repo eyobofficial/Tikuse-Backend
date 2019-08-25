@@ -13,15 +13,16 @@ class HostSignupNotificationSMSTests(TestCase):
 
     def setUp(self):
         self.host = HostFactory(phone_number='+251911000000')
+        self.host.host.full_name = 'John Doe'
 
     @mock.patch('accounts.sms.notifications.HostSignupNotificationSMS.send')
     def test_sms_with_default_values(self, mock_sms):
         """
         Ensure SMS is properly sent with the default values.
         """
-        email = HostSignupNotificationSMS(self.host)
-        email.send()
+        sms = HostSignupNotificationSMS(self.host)
+        sms.send()
 
         # Assertions
         self.assertTrue(mock_sms.called)
-        self.assertEqual(email._sms_type, 'NOTIFICATION')
+        self.assertEqual(sms._sms_type, 'NOTIFICATION')

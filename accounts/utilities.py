@@ -1,4 +1,4 @@
-from .serializers import UserSerializer, HostSerializer
+from .serializers import BaseUserSerializer, HostSerializer
 
 
 def jwt_response_payload_handler(token, user=None, request=None):
@@ -8,7 +8,7 @@ def jwt_response_payload_handler(token, user=None, request=None):
     if user.role == 'HOST':
         SerializerClass = HostSerializer
     else:
-        SerializerClass = UserSerializer
+        SerializerClass = BaseUserSerializer
 
     data = {'token': token}
     data.update(SerializerClass(user, context={'request': request}).data)

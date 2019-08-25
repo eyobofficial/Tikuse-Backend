@@ -14,6 +14,6 @@ class HostSignupNotificationSMS(BaseAccountSMS, NotificationMixin):
 
     def __init__(self, user, *args, **kwargs):
         super().__init__(user, *args, **kwargs)
-        first_name = self.recipient.get_first_name()
+        first_name = self.recipient.host.get_first_name()
         self.message[LANG_ENGLISH] = HOST_SIGNUP_EN.format(first_name)
         self.message[LANG_AMHARIC] = HOST_SIGNUP_AM.format(first_name)

@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 
-from rest_framework.generics import CreateAPIView, RetrieveAPIView
+from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -11,7 +11,7 @@ from shared.constants import LANG_AMHARIC, LANG_ENGLISH
 from shared.views import BaseSMSView
 
 from .models import CustomUser
-from .serializers import UserSerializer, HostSerializer
+from .serializers import HostSerializer
 from .sms.notifications import HostSignupNotificationSMS
 from .utilities import jwt_response_payload_handler
 
@@ -23,7 +23,7 @@ jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 
 class HostSignUpAPIView(CreateAPIView):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = HostSerializer
 
     def create(self, request, *args, **kwargs):
         # Validate serialized data
@@ -32,8 +32,6 @@ class HostSignUpAPIView(CreateAPIView):
 
         # Create new user
         user = serializer.save()
-        user.role = CustomUser.HOST
-        user.save()
 
         # Send Registration SMS
         HostSignupNotificationSMS(user).send(lang='EN')
@@ -49,7 +47,7 @@ class HostSignUpAPIView(CreateAPIView):
         return Response(data, status=status.HTTP_201_CREATED, headers=headers)
 
 
-class HostOwnDetailAPIView(RetrieveAPIView):
+class HostOwnDetailAPIView(RetrieveUpdateAPIView):
     queryset = User.objects.all()
     serializer_class = HostSerializer
     permission_classes = (IsAuthenticated, )
