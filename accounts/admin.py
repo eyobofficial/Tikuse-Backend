@@ -14,7 +14,6 @@ class CustomUserAdmin(CustomURLModelAdmin):
         'username',
         'phone_number',
         'email',
-        'full_name',
         'role',
         'is_active',
         'is_staff',
@@ -23,7 +22,7 @@ class CustomUserAdmin(CustomURLModelAdmin):
     )
     list_display_link = ('username', 'phone_number')
     list_filter = ('role', 'is_active', 'is_staff', 'is_superuser')
-    search_fields = ('username', 'email', 'phone_number', 'full_name')
+    search_fields = ('username', 'email', 'phone_number')
     custom_urls = [
         {
             'regex': r'^(?P<pk>.+)/send-host-signup-notification-en/$',
@@ -53,6 +52,7 @@ class HostProfileAdmin(admin.ModelAdmin):
     list_display = (
         'public_id',
         'user',
+        'full_name',
         'is_activated',
         'created_at',
         'updated_at'

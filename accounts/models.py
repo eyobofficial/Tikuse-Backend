@@ -37,7 +37,6 @@ class CustomUser(AbstractUser):
         default=generate_public_id
     )
     phone_number = PhoneNumberField(unique=True)
-    full_name = models.CharField(max_length=120)
     role = models.CharField(
         max_length=5,
         choices=TYPE_CHOICES,
@@ -46,12 +45,6 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
-
-    def get_full_name(self):
-        return self.full_name
-
-    def get_first_name(self):
-        return self.full_name.split()[0].title()
 
 
 class BaseProfile(models.Model):
@@ -73,7 +66,9 @@ class BaseProfile(models.Model):
         CustomUser,
         on_delete=models.CASCADE
     )
-    email = models.EmailField(blank=True)
+    full_name = models.CharField(blank=True, max_length=120)
+    email = models.EmailField(blank=True, unique=False)
+    is_email_confirmed = models.BooleanField(default=False)
     profile_picture = models.ImageField(
         upload_to=hash_location,
         null=True, blank=True
@@ -83,6 +78,12 @@ class BaseProfile(models.Model):
 
     class Meta:
         abstract = True
+
+    def get_full_name(self):
+        return self.full_name
+
+    def get_first_name(self):
+        return self.full_name.split()[0].title()
 
 
 class GuestProfile(BaseProfile):
@@ -95,9 +96,20 @@ class GuestProfile(BaseProfile):
 
 
 class HostProfile(BaseProfile):
+    CHIRSTIAN = 'CHI'
+    MUSLIM = 'MUS'
+    OTHER = 'OTH'
+    RELIGION_CHOICES = (
+        (CHIRSTIAN, 'Christian'),
+        (MUSLIM, 'Muslim'),
+        (OTHER, 'Other')
+    )
+
     about = models.TextField(blank=True)
     address = models.TextField(blank=True)
     latitude = models.FloatField(null=True, blank=True)
+    religion = models.CharField(
+        blank=True, null=True, max_length=3, choices=RELIGION_CHOICES)
     longitude = models.FloatField(null=True, blank=True)
     is_activated = models.BooleanField('activated', default=False)
     cover_picture = models.ImageField(

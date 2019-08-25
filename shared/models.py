@@ -51,4 +51,4 @@ class SMS(models.Model):
         verbose_name_plural = 'SMS'
 
     def __str__(self):
-        return f'{self.subject} - <{self.recipient.full_name}>'
+        return f'{self.subject} - <{self.recipient.username}>'
